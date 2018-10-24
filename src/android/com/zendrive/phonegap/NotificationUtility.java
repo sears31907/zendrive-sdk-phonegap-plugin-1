@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import com.zendrive.sdk.ZendriveLocationSettingsResult;
 import org.apache.cordova.BuildConfig;
-import org.core_concepts.zendrivetest.R;
+import com.zendrive.R;
 
 /**
  * Utility to create notifications to show to the user when the Zendrive SDK has
@@ -101,15 +101,16 @@ public class NotificationUtility {
                 callGPSSettingIntent, 0);
 
         return new NotificationCompat.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
-                .setContentTitle(context.getResources().getString(R.string.location_disabled))
-                .setTicker(context.getResources().getString(R.string.location_disabled))
-                .setContentText(context.getResources().getString(R.string.enable_location))
-                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
+                .setTicker(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
+                .setContentText(context.getResources().getString(context.getResources().getIdentifier("R.string.enable_location", "string", context.getPackageName())))
+                .setSmallIcon(context.getResources().getIdentifier("R.drawable.ic_notification", "drawable", context.getPackageName()))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .build();
     }
+
 
     /**
      * Create a notification when location permission is denied to the application.
@@ -126,13 +127,13 @@ public class NotificationUtility {
                 callGPSSettingIntent, 0);
 
         return new NotificationCompat.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
-                .setContentTitle(context.getResources().getString(R.string.location_permission_denied))
-                .setTicker(context.getResources().getString(R.string.location_permission_denied))
-                .setContentText(context.getResources().getString(R.string.grant_location_permission))
-                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
+                .setTicker(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
+                .setContentText(context.getResources().getString(context.getResources().getIdentifier("R.string.enable_location", "string", context.getPackageName())))
+                .setSmallIcon(context.getResources().getIdentifier("R.drawable.ic_notification", "drawable", context.getPackageName()))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setContentIntent(pendingIntent)
+                .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .build();
     }
 }
