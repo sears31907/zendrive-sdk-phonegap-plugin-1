@@ -105,6 +105,6 @@
         <source-file src="src/ios/ZendriveCordovaPlugin.m" />
 
         <!-- External Frameworks -->
-        <framework src="ZendriveSDK" type="podspec" spec=":git => 'https://bitbucket.org/zendrive-root/zendrive_cocoapod.git', :tag => '5.6.1'"/>
+        <framework src="ZendriveSDK" type="podspec" spec=":git => 'https://bitbucket.org/zendrive-root/zendrive_cocoapod.git', :tag => '5.4.1'"/>
     </platform>
 </plugin>
