@@ -94,13 +94,15 @@ Zendrive.setup = function (zendriveConfiguration, zendriveCallback, successCallb
     var setupFailureCallback = errorCallback;
 
     exec(setupSuccessCallback, setupFailureCallback, "Zendrive", "setup", [zendriveConfiguration]);
+	return true;
 };
 
 /**
  * Stops driving data collection. The application can disable the Zendrive SDK by invoking this method.
  */
-Zendrive.teardown = function () {
-    exec(null, null, "Zendrive", "teardown", []);
+Zendrive.teardown = function (successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "teardown", []);
+	return true;
 };
 
 /**
@@ -189,27 +191,27 @@ Zendrive.pickupPassenger = function(successCallback, errorCallback) {
 };
 
 Zendrive.dropoffPassenger = function(successCallback, errorCallback) {
-    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+    exec(successCallback, errorCallback, "Zendrive", "dropoffPassenger", []);
 	return true;
 };
 
 Zendrive.acceptPassengerRequest = function(successCallback, errorCallback) {
-    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+    exec(successCallback, errorCallback, "Zendrive", "acceptPassengerRequest", []);
 	return true;
 };
 
 Zendrive.cancelPassengerRequest = function(successCallback, errorCallback) {
-    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+    exec(successCallback, errorCallback, "Zendrive", "cancelPassengerRequest", []);
 	return true;
 };
 
 Zendrive.goOnDuty = function(successCallback, errorCallback) {
-    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+    exec(successCallback, errorCallback, "Zendrive", "goOnDuty", []);
 	return true;
 };
 
 Zendrive.goOffDuty = function(successCallback, errorCallback) {
-    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+    exec(successCallback, errorCallback, "Zendrive", "goOffDuty", []);
 	return true;
 };
 /*************************************************************************************************/
