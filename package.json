@@ -1,9 +1,9 @@
 {
-  "name": "zendrive-cordova-plugin",
+  "name": "cts-fairmatic-cordova-plugin",
   "version": "0.1.0",
   "description": "Phonegap plugin for the Zendrive SDK.",
   "cordova": {
-    "id": "com-zendrive-phonegap-sdk",
+    "id": "com-cts-fairmatic-cordova-plugin",
     "platforms": [
       "android",
       "ios"
