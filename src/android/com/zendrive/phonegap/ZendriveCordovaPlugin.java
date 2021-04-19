@@ -46,10 +46,13 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
 
     public android.content.Context OverrideContext = null;
     private android.content.Context getAppContextThroughApp() {
-        return OverrideContext == null ? this.getAppContextThroughApp() : OverrideContext;
+        return OverrideContext == null ? this.cordova.getActivity().getApplication().getApplicationContext() : OverrideContext;
     }
     private android.content.Context getAppContext() {
-        return OverrideContext == null ? this.getAppContext() : OverrideContext;
+        return OverrideContext == null ? this.cordova.getActivity().getApplicationContext() : OverrideContext;
+    }
+    private android.content.Context getContext() {
+        return OverrideContext == null ? this.cordova.getContext() : OverrideContext;
     }
 
     @Override
@@ -58,12 +61,16 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
         if (CORDOVA_INSTANCE == null) {
             CORDOVA_INSTANCE = cordova;
         }
-        ZendriveManager.init(cordova.getContext());
+        ZendriveManager.init(getContext());
         requestPermissions();
     }
 
     static CordovaInterface getCordovaInstance() {
         return CORDOVA_INSTANCE;
+    }
+
+    public void manuallyInitCordovaPlugin() {
+        this.pluginInitialize();
     }
 
     @Override
@@ -142,10 +149,6 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
             return;
         }
 
-        if (driveDetectionModeInt > 2 || driveDetectionModeInt < 0) {
-            ErrorCallback(callbackContext, "Invalid drive detection mode supplied 0=AutoOff, 1=AutoOn or 2=Insurance");
-        }
-
         ZendriveDriveDetectionMode mode = this.getDriveDetectionModeFromInt(driveDetectionModeInt);
         ZendriveConfiguration configuration = new ZendriveConfiguration(applicationKey, driverId, mode);
 
@@ -160,15 +163,38 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
                 configuration,
                 ZendriveCordovaBroadcastReceiver.class,
                 ZendriveNotificationProviderImpl.class,
-                BuildCallback(callbackContext, "An error occurred during Zendrive.setup().")
-        );
+                zendriveOperationResult -> {
+                    if (zendriveOperationResult.isSuccess()) {
+                        callbackContext.success();
+                    } else {
+                        callbackContext.error("Zendrive setup failed");
+                    }
+                });
+    }
+
+    public void setup(final CallbackContext callbackContext, ZendriveConfiguration configuration, ZendriveDriverAttributes driverAttributes) throws JSONException {
+        // setup Zendrive SDK
+        Zendrive.setup(
+                this.getAppContext(),
+                configuration,
+                ZendriveCordovaBroadcastReceiver.class,
+                ZendriveNotificationProviderImpl.class,
+                zendriveOperationResult -> {
+                    if (zendriveOperationResult.isSuccess()) {
+                        callbackContext.success();
+                    } else {
+                        callbackContext.error("Zendrive setup failed");
+                    }
+                });
     }
 
     private void requestPermissions() {
-        cordova.requestPermission(this, LOCATION_PERMISSION_REQUEST, permission.ACCESS_FINE_LOCATION);
+        if (cordova != null) {
+            cordova.requestPermission(this, LOCATION_PERMISSION_REQUEST, permission.ACCESS_FINE_LOCATION);
+        }
     }
 
-    private void teardown(JSONArray args) throws JSONException {
+    public void teardown(JSONArray args) throws JSONException {
         ZendriveManager.getSharedInstance().teardown(this.getAppContext(),
                 callbackContext);
         callbackContext.success();
@@ -230,7 +256,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
 
 
     private void startDrive(JSONArray args) throws JSONException {
-        Zendrive.startDrive(getAppContext(), args.getString(0),
+        Zendrive.startDrive(getAppContextThroughApp(), args.getString(0),
                 zendriveOperationResult -> {
                     if (zendriveOperationResult.isSuccess()) {
                         callbackContext.success();
