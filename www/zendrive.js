@@ -180,6 +180,40 @@ Zendrive.setDriveDetectionMode = function (driveDetectionMode) {
     exec(null, null, "Zendrive", "setDriveDetectionMode", [driveDetectionMode]);
 };
 
+/*************************************************************************************************
+********* Fairmatic Additions ********************************************************************
+**************************************************************************************************/
+Zendrive.pickupPassenger = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+
+Zendrive.dropoffPassenger = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+
+Zendrive.acceptPassengerRequest = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+
+Zendrive.cancelPassengerRequest = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+
+Zendrive.goOnDuty = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+
+Zendrive.goOffDuty = function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "Zendrive", "pickupPassenger", []);
+	return true;
+};
+/*************************************************************************************************/
+
 /**
  * Dictates the functioning of Zendrive’s drive detection
  * @enum {number}
