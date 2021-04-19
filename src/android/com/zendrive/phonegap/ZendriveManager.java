@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 //import android.support.v4.content.LocalBroadcastManager;
 import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -17,7 +18,9 @@ import com.zendrive.sdk.DriveResumeInfo;
 import com.zendrive.sdk.DriveStartInfo;
 import com.zendrive.sdk.LocationPointWithTimestamp;
 import com.zendrive.sdk.Zendrive;
+import com.zendrive.sdk.ZendriveOperationCallback;
 import com.zendrive.sdk.ZendriveOperationResult;
+import com.zendrive.sdk.insurance.ZendriveInsurance;
 //import com.zendrive.sdk.ZendriveLocationSettingsResult;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
@@ -265,5 +268,70 @@ public class ZendriveManager {
 
     public void onDriveAnalyzed(AnalyzedDriveInfo analyzedDriveInfo) {
 
+    }
+
+
+    void updateZendriveInsurancePeriod(Context context) {
+        ZendriveOperationCallback insuranceCalllback = new ZendriveOperationCallback() {
+            @Override
+            public void onCompletion(ZendriveOperationResult zendriveOperationResult) {
+                if (!zendriveOperationResult.isSuccess()) {
+                    Log.d("TAG", "Insurance period switch failed, error: " +
+                            zendriveOperationResult.getErrorCode().name());
+                }
+            }
+        };
+        InsuranceInfo insuranceInfo = currentlyActiveInsurancePeriod(context);
+        if (insuranceInfo == null) {
+            Log.d("TAG", "updateZendriveInsurancePeriod with NO period");
+            ZendriveInsurance.stopPeriod(context, insuranceCalllback);
+        } else if (insuranceInfo.insurancePeriod == 3) {
+            Log.d("TAG",
+                    String.format("updateZendriveInsurancePeriod with period %d and id: %s",
+                            insuranceInfo.insurancePeriod,
+                            insuranceInfo.trackingId));
+            ZendriveInsurance.startDriveWithPeriod3(context, insuranceInfo.trackingId,
+                    insuranceCalllback);
+        } else if (insuranceInfo.insurancePeriod == 2) {
+            Log.d("TAG",
+                    String.format("updateZendriveInsurancePeriod with period %d and id: %s",
+                            insuranceInfo.insurancePeriod,
+                            insuranceInfo.trackingId));
+            ZendriveInsurance.startDriveWithPeriod2(context, insuranceInfo.trackingId,
+                    insuranceCalllback);
+        } else {
+            Log.d("TAG",
+                    String.format("updateZendriveInsurancePeriod with period %d",
+                            insuranceInfo.insurancePeriod));
+            ZendriveInsurance.startPeriod1(context, insuranceCalllback);
+        }
+    }
+
+    private InsuranceInfo currentlyActiveInsurancePeriod(Context context) {
+        TripManager.State state = TripManager.sharedInstance(context).getTripManagerState();
+        if (!state.isUserOnDuty()) {
+            return null;
+        } else if (state.getPassengersInCar() > 0) {
+            return new InsuranceInfo(3, state.getTrackingId());
+        } else if (state.getPassengersWaitingForPickup() > 0) {
+            return new InsuranceInfo(2, state.getTrackingId());
+        } else {
+            return new InsuranceInfo(1, null);
+        }
+    }
+
+    private NotificationManager getNotificationManager(Context context) {
+        return (NotificationManager) context.getSystemService
+                (Context.NOTIFICATION_SERVICE);
+    }
+
+    private class InsuranceInfo {
+        int insurancePeriod;
+        String trackingId;
+
+        InsuranceInfo(int insurancePeriod, String trackingId) {
+            this.insurancePeriod = insurancePeriod;
+            this.trackingId = trackingId;
+        }
     }
 }
