@@ -18,5 +18,5 @@ repositories {
 }
 
 dependencies {
-    compile 'com.zendrive.sdk.android:ZendriveSDK:5.4.1'
+    compile 'com.zendrive.sdk.android:ZendriveSDK:7.1.0'
 }

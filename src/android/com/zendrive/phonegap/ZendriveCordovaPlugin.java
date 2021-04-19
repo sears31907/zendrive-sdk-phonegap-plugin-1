@@ -61,7 +61,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
                     getActiveDriveInfo();
 
                     } else if (action.equals("stopDrive")) {
-                    stopDrive(args);
+                        stopManualDrive(args);
 
                     } else if (action.equals("startSession")) {
                     startSession(args);
@@ -174,8 +174,8 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
         callbackContext.sendPluginResult(result);
     }
 
-    private void stopDrive(JSONArray args) throws JSONException {
-        Zendrive.stopDrive(this.cordova.getActivity().getApplicationContext(), args.getString(0),
+    private void stopManualDrive(JSONArray args) throws JSONException {
+        Zendrive.stopManualDrive(this.cordova.getActivity().getApplicationContext(), //args.getString(0),
                 zendriveOperationResult -> {
                     if (zendriveOperationResult.isSuccess()) {
                         callbackContext.success();
@@ -228,7 +228,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
             Object firstName = getObjectFromJSONObject(driverAttrJsonObj, "firstName");
             if (!isNull(firstName)) {
                 try {
-                    driverAttributes.setFirstName(firstName.toString());
+                    driverAttributes.setCustomAttribute("firstName", firstName.toString());
                 } catch (Exception e) {
                 }
             }
@@ -236,7 +236,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
             Object lastName = getObjectFromJSONObject(driverAttrJsonObj, "lastName");
             if (!isNull(lastName)) {
                 try {
-                    driverAttributes.setLastName(lastName.toString());
+                    driverAttributes.setCustomAttribute("lastName", lastName.toString());
                 } catch (Exception e) {
                 }
             }
@@ -244,7 +244,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
             Object email = getObjectFromJSONObject(driverAttrJsonObj, "email");
             if (!isNull(email)) {
                 try {
-                    driverAttributes.setEmail(email.toString());
+                    driverAttributes.setCustomAttribute("email", email.toString());
                 } catch (Exception e) {
                 }
             }
@@ -260,7 +260,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
             Object phoneNumber = getObjectFromJSONObject(driverAttrJsonObj, "phoneNumber");
             if (!isNull(phoneNumber)) {
                 try {
-                    driverAttributes.setPhoneNumber(phoneNumber.toString());
+                    driverAttributes.setCustomAttribute("phoneNumber", phoneNumber.toString());
                 } catch (Exception e) {
                 }
             }
@@ -270,7 +270,7 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
                 try {
                     Long driverStartDateTimestampInMillis = Long.parseLong(driverStartDateStr.toString()) * 1000;
                     Date driverStartDate = new Date(driverStartDateTimestampInMillis);
-                    driverAttributes.setDriverStartDate(driverStartDate);
+                    driverAttributes.setCustomAttribute("driverStartDate", driverStartDate.toString());
                 } catch (Exception e) {
                 }
 

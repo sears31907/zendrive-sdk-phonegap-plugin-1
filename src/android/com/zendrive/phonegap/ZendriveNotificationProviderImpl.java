@@ -2,8 +2,12 @@ package com.zendrive.phonegap;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
+//import android.support.annotation.NonNull;
+//import android.support.annotation.RequiresApi;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.zendrive.sdk.ZendriveNotificationContainer;
 import com.zendrive.sdk.ZendriveNotificationProvider;
@@ -13,6 +17,15 @@ import com.zendrive.sdk.ZendriveNotificationProvider;
  * when the SDK goes into foreground mode.
  */
 public class ZendriveNotificationProviderImpl implements ZendriveNotificationProvider {
+
+    @Nullable
+    @Override
+    @RequiresApi(Build.VERSION_CODES.O)
+    public ZendriveNotificationContainer getWaitingForDriveNotificationContainer(@NonNull Context context) {
+        return new ZendriveNotificationContainer(
+                NotificationUtility.FOREGROUND_MODE_NOTIFICATION_ID,
+                NotificationUtility.createWaitingForDriveNotification(context));
+    }
 
     @NonNull
     @Override
@@ -25,6 +38,7 @@ public class ZendriveNotificationProviderImpl implements ZendriveNotificationPro
 
     @NonNull
     @Override
+    @RequiresApi(Build.VERSION_CODES.O)
     public ZendriveNotificationContainer getInDriveNotificationContainer(@NonNull Context context) {
         return new ZendriveNotificationContainer(
                 NotificationUtility.FOREGROUND_MODE_NOTIFICATION_ID,

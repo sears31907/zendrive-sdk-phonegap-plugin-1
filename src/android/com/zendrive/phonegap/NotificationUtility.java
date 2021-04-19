@@ -7,10 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import com.zendrive.sdk.ZendriveLocationSettingsResult;
+//import android.support.v4.app.NotificationCompat;
+//import com.zendrive.sdk.ZendriveLocationSettingsResult;
+import androidx.annotation.RequiresApi;
+
 import org.apache.cordova.BuildConfig;
 import com.zendrive.R;
+import com.zendrive.sdk.ZendriveOperationResult;
 
 /**
  * Utility to create notifications to show to the user when the Zendrive SDK has
@@ -35,14 +38,33 @@ public class NotificationUtility {
      * @param context App context
      * @return the created notification.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Notification createMaybeInDriveNotification(Context context) {
         createNotificationChannels(context);
 
         // suppresses deprecated warning for setPriority(PRIORITY_MIN)
         // noinspection deprecation
-        return new NotificationCompat.Builder(context, FOREGROUND_CHANNEL_KEY).setContentTitle("Zendrive")
-                .setDefaults(0).setPriority(NotificationCompat.PRIORITY_MIN)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE).setContentText("Detecting possible drive.")
+        return new Notification.Builder(context, FOREGROUND_CHANNEL_KEY).setContentTitle("Zendrive")
+                .setDefaults(0).setPriority(Notification.PRIORITY_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE).setContentText("Detecting possible drive.")
+                .setContentIntent(getNotificationClickIntent(context)).build();
+    }
+    /**
+     * Create a notification that is displayed when the Zendrive SDK detects a
+     * possible drive.
+     *
+     * @param context App context
+     * @return the created notification.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Notification createWaitingForDriveNotification(Context context) {
+        createNotificationChannels(context);
+
+        // suppresses deprecated warning for setPriority(PRIORITY_MIN)
+        // noinspection deprecation
+        return new Notification.Builder(context, FOREGROUND_CHANNEL_KEY).setContentTitle("Zendrive")
+                .setDefaults(0).setPriority(Notification.PRIORITY_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE).setContentText("Detecting waiting for drive.")
                 .setContentIntent(getNotificationClickIntent(context)).build();
     }
 
@@ -53,10 +75,11 @@ public class NotificationUtility {
      * @param context App context
      * @return the created notification.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Notification createInDriveNotification(Context context) {
         createNotificationChannels(context);
-        return new NotificationCompat.Builder(context, FOREGROUND_CHANNEL_KEY).setContentTitle("Zendrive")
-                .setCategory(NotificationCompat.CATEGORY_SERVICE).setContentText("Drive started.")
+        return new Notification.Builder(context, FOREGROUND_CHANNEL_KEY).setContentTitle("Zendrive")
+                .setCategory(Notification.CATEGORY_SERVICE).setContentText("Drive started.")
                 .setContentIntent(getNotificationClickIntent(context)).build();
     }
 
@@ -88,8 +111,9 @@ public class NotificationUtility {
      * @param settingsResult to get potential resolution from play services
      * @return the created notification.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Notification createLocationSettingDisabledNotification(Context context,
-                                                                         ZendriveLocationSettingsResult settingsResult) {
+                                                                         ZendriveOperationResult settingsResult) {
         createNotificationChannels(context);
         if (BuildConfig.DEBUG && settingsResult.isSuccess()) {
             throw new AssertionError("Only expected failed settings result");
@@ -100,14 +124,14 @@ public class NotificationUtility {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0,
                 callGPSSettingIntent, 0);
 
-        return new NotificationCompat.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
+        return new Notification.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
                 .setContentTitle(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
                 .setTicker(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
                 .setContentText(context.getResources().getString(context.getResources().getIdentifier("R.string.enable_location", "string", context.getPackageName())))
                 .setSmallIcon(context.getResources().getIdentifier("R.drawable.ic_notification", "drawable", context.getPackageName()))
-                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
-                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                .setCategory(Notification.CATEGORY_ERROR)
                 .build();
     }
 
@@ -117,6 +141,7 @@ public class NotificationUtility {
      * @param context App context
      * @return the created notification.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Notification createLocationPermissionDeniedNotification(Context context) {
         createNotificationChannels(context);
         // TODO: The click intent should not point to location settings. Perhaps we can load
@@ -126,14 +151,14 @@ public class NotificationUtility {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0,
                 callGPSSettingIntent, 0);
 
-        return new NotificationCompat.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
+        return new Notification.Builder(context.getApplicationContext(), LOCATION_CHANNEL_KEY)
                 .setContentTitle(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
                 .setTicker(context.getResources().getString(context.getResources().getIdentifier("R.string.location_disabled", "string", context.getPackageName())))
                 .setContentText(context.getResources().getString(context.getResources().getIdentifier("R.string.enable_location", "string", context.getPackageName())))
                 .setSmallIcon(context.getResources().getIdentifier("R.drawable.ic_notification", "drawable", context.getPackageName()))
-                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
-                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                .setCategory(Notification.CATEGORY_ERROR)
                 .build();
     }
 }

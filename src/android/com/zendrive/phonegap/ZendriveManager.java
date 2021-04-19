@@ -5,7 +5,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.content.LocalBroadcastManager;
+//import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.RequiresApi;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.zendrive.sdk.AccidentInfo;
 import com.zendrive.sdk.ActiveDriveInfo;
 import com.zendrive.sdk.AnalyzedDriveInfo;
@@ -14,7 +17,8 @@ import com.zendrive.sdk.DriveResumeInfo;
 import com.zendrive.sdk.DriveStartInfo;
 import com.zendrive.sdk.LocationPointWithTimestamp;
 import com.zendrive.sdk.Zendrive;
-import com.zendrive.sdk.ZendriveLocationSettingsResult;
+import com.zendrive.sdk.ZendriveOperationResult;
+//import com.zendrive.sdk.ZendriveLocationSettingsResult;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
@@ -213,7 +217,7 @@ public class ZendriveManager {
             displayOrHideLocationPermissionNotification(granted);
             Intent intent = new Intent(EVENT_LOCATION_PERMISSION_CHANGE);
             intent.putExtra(EVENT_LOCATION_PERMISSION_CHANGE, granted);
-            LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
+            //LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
 
         } else {
             throw new RuntimeException("Callback on non marshmallow sdk");
@@ -228,22 +232,24 @@ public class ZendriveManager {
             mNotificationManager.cancel(NotificationUtility.LOCATION_PERMISSION_DENIED_NOTIFICATION_ID);
         } else {
             // Notify user
-            Notification notification = NotificationUtility.createLocationPermissionDeniedNotification(context);
-            mNotificationManager.notify(NotificationUtility.LOCATION_PERMISSION_DENIED_NOTIFICATION_ID, notification);
+            //Notification notification = NotificationUtility.createLocationPermissionDeniedNotification(context);
+            //mNotificationManager.notify(NotificationUtility.LOCATION_PERMISSION_DENIED_NOTIFICATION_ID, notification);
         }
     }
 
     /**
      * Location settings on the device changed.
      */
-    public void onLocationSettingsChange(ZendriveLocationSettingsResult settingsResult) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void onLocationSettingsChange(ZendriveOperationResult settingsResult) {
         displayOrHideLocationSettingNotification(settingsResult);
         Intent intent = new Intent(EVENT_LOCATION_SETTING_CHANGE);
-        intent.putExtra(EVENT_LOCATION_SETTING_CHANGE, settingsResult);
+        intent.putExtra(EVENT_LOCATION_SETTING_CHANGE, settingsResult.toString());
         LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
     }
 
-    private void displayOrHideLocationSettingNotification(ZendriveLocationSettingsResult settingsResult) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void displayOrHideLocationSettingNotification(ZendriveOperationResult settingsResult) {
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         if (settingsResult.isSuccess()) {
