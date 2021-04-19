@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/schmookeeg/zendrive-sdk-phonegap-plugin.git"
+    "url": "git+https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -27,7 +27,7 @@
   "author": "Pullup",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/schmookeeg/zendrive-sdk-phonegap-plugin/issues"
+    "url": "https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1/issues"
   },
-  "homepage": "https://github.com/schmookeeg/zendrive-sdk-phonegap-plugin#readme"
+  "homepage": "https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1#readme"
 }

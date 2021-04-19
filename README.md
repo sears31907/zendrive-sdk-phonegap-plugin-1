@@ -20,18 +20,18 @@ sudo gem install cocoapods
 
 ### Integrate zendrive phonegap plugin by running the following cordova command
 ```
-cordova plugin add https://github.com/trackerup/zendrive-sdk-phonegap-plugin
+cordova plugin add https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1
 ```
 
 ### Alternatively if you are using plugman in your application then use the following
 #### For Android
 ```
-plugman install --platform android --project ./platforms/android --plugin https://github.com/trackerup/zendrive-sdk-phonegap-plugin
+plugman install --platform android --project ./platforms/android --plugin https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1
 ```
 
 #### For iOS
 ```
-plugman install --platform ios --project ./platforms/ios --plugin https://github.com/trackerup/zendrive-sdk-phonegap-plugin
+plugman install --platform ios --project ./platforms/ios --plugin https://github.com/justincts1975/zendrive-sdk-phonegap-plugin-1
 ```
 
 ### Alternatively if you are using phonegap build then add the following in your config.xml ( plugin only supported for android )
