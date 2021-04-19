@@ -17,4 +17,11 @@
 
 - (void)setDriveDetectionMode:(CDVInvokedUrlCommand *)command;
 
+- (void)pickupPassenger:(CDVInvokedUrlCommand*)command;
+- (void)dropoffPassenger:(CDVInvokedUrlCommand*)command;
+- (void)acceptPassengerRequest:(CDVInvokedUrlCommand*)command;
+- (void)cancelPassengerRequest:(CDVInvokedUrlCommand*)command;
+- (void)goOnDuty:(CDVInvokedUrlCommand*)command;
+- (void)goOffDuty:(CDVInvokedUrlCommand*)command;
+
 @end
