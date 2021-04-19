@@ -83,32 +83,35 @@ public class ZendriveCordovaPlugin extends CordovaPlugin {
                     setup(args);
                 } else if (action.equals("teardown")) {
                     teardown(args);
-
                 } else if (action.equals("startDrive")) {
                     startDrive(args);
-
                 } else if (action.equals("getActiveDriveInfo")) {
                     getActiveDriveInfo();
-
                 } else if (action.equals("stopDrive")) {
                     stopManualDrive(args);
-
                 } else if (action.equals("startSession")) {
                     startSession(args);
-
                 } else if (action.equals("stopSession")) {
                     stopSession(args);
-
                 } else if (action.equals("setDriveDetectionMode")) {
                     setDriveDetectionMode(args);
-
                 } else if (action.equals("setProcessStartOfDriveDelegateCallback")) {
                     ZendriveManager.getSharedInstance().setProcessStartOfDriveDelegateCallback(args,
                             callbackContext);
-
                 } else if (action.equals("setProcessEndOfDriveDelegateCallback")) {
                     ZendriveManager.getSharedInstance().setProcessEndOfDriveDelegateCallback(args, callbackContext);
-
+                } else if (action.equals("pickupPassenger")) {
+                    pickupPassenger(callbackContext);
+                } else if (action.equals("dropoffPassenger")) {
+                    dropoffPassenger(callbackContext);
+                } else if (action.equals("acceptPassengerRequest")) {
+                    acceptPassengerRequest(callbackContext);
+                } else if (action.equals("cancelPassengerRequest")) {
+                    cancelPassengerRequest(callbackContext);
+                } else if (action.equals("goOnDuty")) {
+                    goOnDuty(callbackContext);
+                } else if (action.equals("goOffDuty")) {
+                    goOffDuty(callbackContext);
                 }
                 callbackContext.success(); // Thread-safe.
             } catch (JSONException e) {
