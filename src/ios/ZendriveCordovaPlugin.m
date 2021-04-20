@@ -100,11 +100,18 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [ZendriveInsurance startDriveWithPeriod3:tracking_ID completionHandler:^(BOOL success, NSError * _Nullable error)completionHandler]
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            [ZendriveInsurance startDriveWithPeriod3:trackingId^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
-    }];
+    }];  
 }
 
 
@@ -112,9 +119,16 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [ZendriveInsurance stopPeriod:^(BOOL success, NSError * _Nullable error)completionHandler];
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            [ZendriveInsurance stopPeriod:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
     }];
 }
@@ -124,9 +138,16 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [ZendriveInsurance startDriveWithPeriod2:tracking_ID completionHandler:^(BOOL success, NSError * _Nullable error)completionHandler]
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            [ZendriveInsurance startDriveWithPeriod2:trackingId^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
     }];
 }
@@ -135,9 +156,16 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [Zendrive startDriveWithPeriod1:^(BOOL success, NSError * _Nullable error)completionHandler]
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            [ZendriveInsurance startDriveWithPeriod1:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
     }];
 }
@@ -146,9 +174,16 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [ZendriveInsurance startDriveWithPeriod1:^(BOOL success, NSError * _Nullable error)completionHandler];
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+           [ZendriveInsurance startDriveWithPeriod1:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
     }];
 }
@@ -157,9 +192,16 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     [self.commandDelegate runInBackground:^{
         @synchronized(self) {
             NSString *trackingId = [command argumentAtIndex:0];
-            [ZendriveInsurance stopPeriod:^(BOOL success, NSError * _Nullable error)completionHandler];
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            [ZendriveInsurance stopPeriod:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                NSLog(@"Insurance period 1 successfully called. Manual tracking starting.");
+            }
+            else {
+                if (error) {
+                    NSLog(@"Error encountered while calling period 1. Error is: %li", (long)error.code);
+                }
+            }
+            }];
         }
     }];
 }
@@ -370,7 +412,7 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     }
         NSLog(@"Analysis of Drive invoked");
     }
-}
+
 
 - (void)processLocationDenied {
     if (!self.processLocationDeniedCallbackId) {
@@ -447,8 +489,7 @@ static NSString * const kDriverAttributesKey = @"driverAttributes";
     }
 
     ZendriveConfiguration *configuration = [[ZendriveConfiguration alloc] init];
-    configuration.operationMode = ZendriveOperationModeDriverAnalytics;
-
+  
     NSString *applicationKey = [configDictionary objectForKey:kConfigurationApplicationKey];
     if (![self isNULL:applicationKey]) {
         configuration.applicationKey = applicationKey;
